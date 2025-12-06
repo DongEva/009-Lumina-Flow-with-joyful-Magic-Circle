@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { SymmetryMode } from '../types';
-import { Palette, Undo2, RefreshCcw, Sparkles, ChevronDown, ChevronUp, Settings2, PenTool } from 'lucide-react';
+import { Palette, Undo2, RefreshCcw, Sparkles, ChevronDown, ChevronUp, Settings2, PenTool, Download, Clapperboard } from 'lucide-react';
 
 interface ControlPanelProps {
   symmetry: SymmetryMode;
@@ -13,6 +13,8 @@ interface ControlPanelProps {
   onCastSpell: () => void;
   onClear: () => void;
   onUndo: () => void;
+  onDownload: () => void;
+  onDownloadVideo: () => void;
   isAnimating: boolean;
   canUndo: boolean;
 }
@@ -27,6 +29,8 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   onCastSpell,
   onClear,
   onUndo,
+  onDownload,
+  onDownloadVideo,
   isAnimating,
   canUndo
 }) => {
@@ -179,6 +183,24 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             title="Clear Canvas"
           >
             <RefreshCcw size={20} />
+          </button>
+
+          <button
+            onClick={onDownload}
+            disabled={!canUndo}
+            className={`p-3 transition-all duration-300 rounded-full border border-transparent hover:border-[#8e6e38]/50 ${!canUndo ? 'text-[#8e6e38]/30' : 'text-[#8e6e38] hover:text-white hover:bg-[#8e6e38]/20'}`}
+            title="Download Poster Image"
+          >
+            <Download size={20} />
+          </button>
+
+          <button
+            onClick={onDownloadVideo}
+            disabled={!canUndo}
+            className={`p-3 transition-all duration-300 rounded-full border border-transparent hover:border-[#8e6e38]/50 ${!canUndo ? 'text-[#8e6e38]/30' : 'text-[#8e6e38] hover:text-white hover:bg-[#8e6e38]/20'}`}
+            title="Download Video Poster"
+          >
+            <Clapperboard size={20} />
           </button>
           
           <button

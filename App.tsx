@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
-import Visualizer from './components/Visualizer';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import Visualizer, { VisualizerHandle } from './components/Visualizer';
 import ControlPanel from './components/ControlPanel';
 import { SymmetryMode, MAGIC_COLORS, Stroke } from './types';
 import { audioSynth } from './services/audioSynth';
@@ -12,6 +12,7 @@ const App: React.FC = () => {
   const [triggerAnim, setTriggerAnim] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [strokes, setStrokes] = useState<Stroke[]>([]);
+  const visualizerRef = useRef<VisualizerHandle>(null);
 
   // Initialize audio context on first click anywhere
   useEffect(() => {
@@ -59,6 +60,14 @@ const App: React.FC = () => {
     setIsAnimating(false);
   };
 
+  const handleDownload = () => {
+    visualizerRef.current?.savePoster();
+  };
+
+  const handleDownloadVideo = () => {
+    visualizerRef.current?.saveVideo();
+  };
+
   // Callback for when Visualizer finishes a new stroke
   const handleStrokeAdded = (newStroke: Stroke) => {
     setStrokes(prev => [...prev, newStroke]);
@@ -94,6 +103,7 @@ const App: React.FC = () => {
       )}
 
       <Visualizer 
+        ref={visualizerRef}
         symmetry={symmetry}
         color={color}
         brushSize={brushSize}
@@ -114,6 +124,8 @@ const App: React.FC = () => {
         onCastSpell={handleCastSpell}
         onClear={handleClear}
         onUndo={handleUndo}
+        onDownload={handleDownload}
+        onDownloadVideo={handleDownloadVideo}
         isAnimating={isAnimating}
         canUndo={strokes.length > 0}
       />
